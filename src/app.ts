@@ -3,6 +3,8 @@ import express, { Application, NextFunction, Request, Response } from 'express'
 import httpStatus from 'http-status'
 
 import cookieParser from 'cookie-parser'
+import { authRoutes } from './app/modules/auth/auth.route'
+import globalErrorHandler from './app/middlewares/globalErrorHandler'
 
 const app: Application = express()
 
@@ -17,13 +19,31 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-// app.use('/api/v1', routes)
+app.use('/api/v1/auth', authRoutes)
 
 app.get('/', async (req: Request, res: Response, next: NextFunction) => {
   res.status(httpStatus.OK).json({
     success: true,
     message: 'Welcome HTTP SERVER',
   })
-})
+});
+
+// Global error handler
+app.use(globalErrorHandler);
+
+// handle not found route
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(httpStatus.NOT_FOUND).json({
+    success: false,
+    message: 'Not Found',
+    errorMessages: [
+      {
+        path: req.originalUrl,
+        message: 'Resource not found',
+      },
+    ],
+  });
+  next();
+});
 
 export default app

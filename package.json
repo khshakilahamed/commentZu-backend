@@ -18,9 +18,11 @@
   "author": "kh. shakil",
   "license": "ISC",
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@types/cookie-parser": "^1.4.10",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.5",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^24.10.1",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.6.2",
@@ -31,6 +33,7 @@
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "^8.46.4",
     "@typescript-eslint/parser": "^8.46.4",
+    "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
@@ -38,7 +41,9 @@
     "express": "^5.1.0",
     "http-status": "^2.1.0",
     "husky": "^9.1.7",
+    "jsonwebtoken": "^9.0.2",
     "lint-staged": "^16.2.6",
-    "mongoose": "^8.19.3"
+    "mongoose": "^8.19.3",
+    "zod": "^4.1.12"
   }
 }
