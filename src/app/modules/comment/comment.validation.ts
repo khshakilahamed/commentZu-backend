@@ -8,19 +8,18 @@ export const addCommentSchema = z.object({
 
 export const getCommentSchema = z.object({
       query: z.object({
-            page: z
-                  .string()
-                  .transform((val) => (val ? parseInt(val, 10) : 1))
-                  .optional()
-                  ,
-            limit: z
-                  .string()
-                  .transform((val) => (val ? parseInt(val, 10) : 10))
-                  .optional(),
+            page: z.coerce.number().int().min(1).default(1).optional(),
+            limit: z.coerce.number().int().min(1).default(10).optional(),
             sortBy: z
                   .enum(['mostLiked', 'mostDisliked', 'newest'])
                   .default('newest')
                   .optional(),
             sortOrder: z.enum(['asc', 'desc']).default('desc').optional(),
       }),
-})
+});
+
+export const likeCommentSchema = z.object({
+      params: z.object({
+            commentId: z.string(),
+      }),
+});
