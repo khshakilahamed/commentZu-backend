@@ -8,9 +8,9 @@ const validateRequest =
             async (req: Request, res: Response, next: NextFunction): Promise<void> => {
                   try {
                         const validatedData = schema.parse({
-                              body: req.body,
-                              query: req.query,
-                              params: req.params,
+                              body: req.body || {},
+                              query: req.query || {},
+                              params: req.params || {},
                         });
 
                         const originalBodyKeys = Object.keys(req.body || {});
@@ -52,10 +52,14 @@ const validateRequest =
                         // req.body = validatedData.body;
                         // req.query = validatedData.query as any;
 
-                        // mutate existing objects instead of reassigning
+                        /* // mutate existing objects instead of reassigning
                         Object.assign(req.body, validatedData.body);
                         Object.assign(req.query as any, validatedData.query);
-                        Object.assign(req.params, validatedData.params);
+                        Object.assign(req.params, validatedData.params); */
+
+                        if (validatedData?.body) Object.assign(req.body, validatedData.body);
+                        if (validatedData?.query) Object.assign(req.query as any, validatedData.query);
+                        if (validatedData?.params) Object.assign(req.params, validatedData.params);
 
 
                         return next();

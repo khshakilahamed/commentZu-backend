@@ -5,6 +5,7 @@ import httpStatus from 'http-status'
 import cookieParser from 'cookie-parser'
 import { authRoutes } from './app/modules/auth/auth.route'
 import globalErrorHandler from './app/middlewares/globalErrorHandler'
+import { commentRoutes } from './app/modules/comment/comment.route'
 
 const app: Application = express()
 
@@ -19,7 +20,8 @@ app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
-app.use('/api/v1/auth', authRoutes)
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/comment', commentRoutes);
 
 app.get('/', async (req: Request, res: Response, next: NextFunction) => {
   res.status(httpStatus.OK).json({
