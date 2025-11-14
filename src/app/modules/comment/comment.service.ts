@@ -2,6 +2,8 @@ import { IAuthUser } from "../auth/auth.interface";
 import { Comment } from "./comment.model";
 import { IGetCommentsOptions } from "./comment.interface";
 import { Types } from "mongoose";
+import ApiError from "../../../errors/ApiError";
+import httpStatus from "http-status";
 
 export const addCommentService = async (user: IAuthUser, payload: { content: string }) => {
       const newComment = await Comment.create({
@@ -50,7 +52,7 @@ export const getCommentService = async ({
                   page: Number(page),
                   limit: Number(limit),
                   totalPages,
-                  totalComments,
+                  total: totalComments,
             }
       };
 };
@@ -169,6 +171,10 @@ export const replyCommentService = async (user: IAuthUser, commentId: string, pa
             author: userId,
             parentComment: commentId,
       });
+      await newComment.populate({
+            path: 'author',
+            select: '-password -__v',
+      });
 
       return newComment;
 }
@@ -176,9 +182,26 @@ export const replyCommentService = async (user: IAuthUser, commentId: string, pa
 export const getRepliedCommentService = async (commentId: string) => {
       const repliedComments = await Comment.find({
             parentComment: commentId,
-      }).sort({ createdAt: -1 });
+      }).populate({
+            path: 'author',
+            select: '-password -__v',
+      });
 
       return repliedComments;
+}
+
+export const deleteParentCommentService = async (user: IAuthUser, commentId: string) => {
+      const deletedComment = await Comment.findOneAndDelete({
+            _id: commentId,
+            author: user?.userId,
+            parentComment: null
+      }).lean();
+
+      if (!deletedComment) {
+            throw new ApiError(httpStatus.NOT_FOUND, 'Comment not found.');
+      }
+
+      return deletedComment
 }
 
 

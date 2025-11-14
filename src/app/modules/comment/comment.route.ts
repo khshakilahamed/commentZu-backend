@@ -1,5 +1,5 @@
 import express from 'express'
-import { addCommentController, dislikeCommentController, getCommentController, getRepliedCommentController, likeCommentController, replyCommentController } from './comment.controller';
+import { addCommentController, deleteParentCommentController, dislikeCommentController, getCommentController, getRepliedCommentController, likeCommentController, replyCommentController } from './comment.controller';
 import auth from '../../middlewares/auth';
 import { addCommentSchema, getCommentSchema, likeCommentSchema } from './comment.validation';
 import validateRequest from '../../middlewares/validateRequest';
@@ -38,6 +38,11 @@ router
             auth,
             validateRequest(likeCommentSchema),
             getRepliedCommentController
+      )
+      .delete('/:commentId/parent',
+            auth,
+            validateRequest(likeCommentSchema),
+            deleteParentCommentController
       )
 
 export const commentRoutes = router;

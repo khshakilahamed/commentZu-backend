@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import catchAsync from "../../../shared/catchAsync";
-import { addCommentService, dislikeCommentService, getCommentService, getRepliedCommentService, likeCommentService, replyCommentService } from "./comment.service";
+import { addCommentService, deleteParentCommentService, dislikeCommentService, getCommentService, getRepliedCommentService, likeCommentService, replyCommentService } from "./comment.service";
 import sendResponse from "../../../shared/sendResponse";
 import httpStatus from 'http-status'
 import { IAuthUser } from "../auth/auth.interface";
@@ -84,6 +84,20 @@ export const getRepliedCommentController = catchAsync(async (req: Request, res: 
             statusCode: httpStatus.OK,
             success: true,
             message: 'Successfully replied.',
+            data: result,
+      });
+});
+
+export const deleteParentCommentController = catchAsync(async (req: Request, res: Response) => {
+      const commentId = req.params?.commentId;
+      const user = req.user as IAuthUser;
+
+      const result = await deleteParentCommentService(user, commentId);
+
+      sendResponse(res, {
+            statusCode: httpStatus.OK,
+            success: true,
+            message: 'Comment deleted',
             data: result,
       });
 });

@@ -29,6 +29,18 @@ async function bootstrap() {
       socket.on("comment:like", (payload) => {
         io.emit("comment:liked", payload);
       });
+
+      socket.on("comment:delete", (commentId: string) => {
+        io.emit("comment:deleted", commentId);
+      });
+
+      socket.on("comment:like", (payload) => {
+        io.emit("comment:liked", payload);
+      });
+
+      socket.on("comment:reply:add", (payload) => {
+        io.emit("comment:reply:added", payload);
+      });
     });
 
   } catch (err) {
