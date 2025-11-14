@@ -9,6 +9,11 @@ export const addCommentService = async (user: IAuthUser, payload: { content: str
             author: user?.userId
       });
 
+      await newComment.populate({
+            path: 'author',
+            select: '-password -__v',
+      });
+
       return newComment;
 }
 
@@ -40,11 +45,13 @@ export const getCommentService = async ({
       const totalPages = Math.ceil(totalComments / limit);
 
       return {
-            comments,
-            page: Number(page),
-            limit: Number(limit),
-            totalPages,
-            totalComments,
+            data: comments,
+            meta: {
+                  page: Number(page),
+                  limit: Number(limit),
+                  totalPages,
+                  totalComments,
+            }
       };
 };
 
@@ -88,8 +95,8 @@ export const likeCommentService = async (user: IAuthUser, commentId: string) => 
       const updatedComment = await Comment.findById(commentId)
             .populate([
                   { path: 'author', select: '-password' },
-                  { path: 'likes', select: '_id firstName lastName', options: { sort: { createdAt: -1 } } },
-                  { path: 'dislikes', select: '_id firstName lastName', options: { sort: { createdAt: -1 } } },
+                  // { path: 'likes', select: '_id firstName lastName', options: { sort: { createdAt: -1 } } },
+                  // { path: 'dislikes', select: '_id firstName lastName', options: { sort: { createdAt: -1 } } },
             ])
             .lean();
 
@@ -136,8 +143,8 @@ export const dislikeCommentService = async (user: IAuthUser, commentId: string) 
       const updatedComment = await Comment.findById(commentId)
             .populate([
                   { path: 'author', select: '-password' },
-                  { path: 'likes', select: '_id firstName lastName', options: { sort: { createdAt: -1 } } },
-                  { path: 'dislikes', select: '_id firstName lastName', options: { sort: { createdAt: -1 } } },
+                  // { path: 'likes', select: '_id firstName lastName', options: { sort: { createdAt: -1 } } },
+                  // { path: 'dislikes', select: '_id firstName lastName', options: { sort: { createdAt: -1 } } },
             ])
             .lean();
 
