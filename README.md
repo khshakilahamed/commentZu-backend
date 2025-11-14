@@ -55,7 +55,24 @@ Frontend
 
 ### Authentication
 -  `POST /api/v1/auth/register`
+```json
+// request body
+{
+    "firstName": "Kh.",
+    "lastName": "Shakil",
+    "email": "shakil2@gmail.com",
+    "password": "shakil"
+}
+```
+
 -  `POST /api/v1/auth/login`
+```json
+// request body
+{
+    "email": "shakil@gmail.com",
+    "password": "shakil"
+}
+```
 
 ### Comment
 -  `POST /api/v1/comment`
