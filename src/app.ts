@@ -10,8 +10,12 @@ import { commentRoutes } from './app/modules/comment/comment.route'
 const app: Application = express()
 
 const corsOptions = {
-  origin: true,
+  origin: [
+    "https://comment-zu-frontend.vercel.app",
+    "http://localhost:3000"
+  ],
   credentials: true,
+  methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
 }
 app.use(cors(corsOptions))
 app.use(cookieParser())
