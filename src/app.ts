@@ -13,7 +13,8 @@ const corsOptions = {
   origin: [
     "https://comment-zu-frontend.vercel.app",
     "http://localhost:3000",
-    "http://localhost:5174"
+    "http://localhost:5173",
+    "http://localhost:5174",
   ],
   credentials: true,
   methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
